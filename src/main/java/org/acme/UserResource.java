@@ -4,7 +4,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/hello")
-public class GreetingResource {
+public class UserResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
