@@ -4,7 +4,7 @@ FROM postgres:latest
 
 ENV POSTGRES_USER=user
 ENV POSTGRES_PASSWORD=password
-ENV POSTGRES_DB=quarkus_db
+ENV POSTGRES_DB=quarkus-db
 
 EXPOSE 5432
 
