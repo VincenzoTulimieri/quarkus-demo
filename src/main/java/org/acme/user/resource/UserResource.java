@@ -3,6 +3,7 @@ package org.acme.user.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.acme.user.entity.UserEntity;
 import org.acme.user.service.UserService;
 
@@ -23,9 +24,15 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
-    public UserEntity getUserById(Long id){
-        return userService.getUserById(id);
+    public Response getUserById(@PathParam("id") Long id){
+        UserEntity user = userService.getUserById(id);
+        if (user == null){
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("Utente non trovato")
+                    .build();
+        }
+        return Response.ok(user).build();
     }
-
 
 }
