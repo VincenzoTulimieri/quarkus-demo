@@ -1,12 +1,14 @@
 package org.acme.user.resource;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.user.entity.UserEntity;
 import org.acme.user.service.UserService;
 
+import java.net.URI;
 import java.util.List;
 
 @Path("/users")
@@ -33,6 +35,16 @@ public class UserResource {
                     .build();
         }
         return Response.ok(user).build();
+    }
+
+    @POST
+    @Transactional
+    public Response createUser(UserEntity user){
+        UserEntity createdUser = userService.createUser(user);
+
+        return Response.created(URI.create("/users/" + createdUser.getId()))
+                .entity(createdUser)
+                .build();
     }
 
 }
