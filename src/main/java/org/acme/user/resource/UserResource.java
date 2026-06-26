@@ -47,4 +47,12 @@ public class UserResource {
                 .build();
     }
 
+    @PUT
+    @Transactional
+    @Path("/{id}")
+    public Response updateUser(@PathParam("id") Long id, UserEntity newData){
+        UserEntity updatedUser = userService.updateUser(id, newData);
+        return Response.ok(updatedUser).build();
+    }
+
 }
