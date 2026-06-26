@@ -41,7 +41,6 @@ public class UserResource {
     @Transactional
     public Response createUser(UserEntity user){
         UserEntity createdUser = userService.createUser(user);
-
         return Response.created(URI.create("/users/" + createdUser.getId()))
                 .entity(createdUser)
                 .build();
@@ -51,8 +50,16 @@ public class UserResource {
     @Transactional
     @Path("/{id}")
     public Response updateUser(@PathParam("id") Long id, UserEntity newData){
-        UserEntity updatedUser = userService.updateUser(id, newData);
-        return Response.ok(updatedUser).build();
+        try {
+            UserEntity updatedUser = userService.updateUser(id, newData);
+            return Response.ok(updatedUser).build();
+        }catch (IllegalArgumentException exception){
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity(exception.getMessage())
+                    .build();
+        }
+
     }
 
     @DELETE
