@@ -55,4 +55,18 @@ public class UserResource {
         return Response.ok(updatedUser).build();
     }
 
+    @DELETE
+    @Transactional
+    @Path("/{id}")
+    public Response deleteUser(@PathParam("id") Long id){
+        boolean deleted = userService.deleteUser(id);
+        if (!deleted){
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("Utente non trovato")
+                    .build();
+        }
+        return Response.noContent().build();
+    }
+
 }
