@@ -38,7 +38,6 @@ public class UserResource {
     }
 
     @POST
-    @Transactional
     public Response createUser(UserEntity user){
         UserEntity createdUser = userService.createUser(user);
         return Response.created(URI.create("/users/" + createdUser.getId()))
@@ -47,7 +46,6 @@ public class UserResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     public Response updateUser(@PathParam("id") Long id, UserEntity newData){
         try {
@@ -63,7 +61,6 @@ public class UserResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id){
         boolean deleted = userService.deleteUser(id);

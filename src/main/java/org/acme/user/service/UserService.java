@@ -2,6 +2,7 @@ package org.acme.user.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.acme.user.entity.UserEntity;
 import org.acme.user.repository.UserRepository;
 
@@ -31,11 +32,13 @@ public class UserService {
     }
 
     // metodi di gestione degli utenti
+    @Transactional
     public UserEntity createUser(UserEntity user){
         userRepository.persist(user);
         return user;
     }
 
+    @Transactional
     public UserEntity updateUser(Long id, UserEntity newData){
         UserEntity entity = userRepository.findById(id);
         if(entity != null){
@@ -48,6 +51,7 @@ public class UserService {
         return entity;
     }
 
+    @Transactional
     public boolean deleteUser(Long id){
         return userRepository.deleteById(id);
     }
