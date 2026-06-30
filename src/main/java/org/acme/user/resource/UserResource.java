@@ -2,6 +2,7 @@ package org.acme.user.resource;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -38,7 +39,7 @@ public class UserResource {
     }
 
     @POST
-    public Response createUser(UserEntity user){
+    public Response createUser(@Valid UserEntity user){
         UserEntity createdUser = userService.createUser(user);
         return Response.created(URI.create("/users/" + createdUser.getId()))
                 .entity(createdUser)
@@ -57,7 +58,6 @@ public class UserResource {
                     .entity(exception.getMessage())
                     .build();
         }
-
     }
 
     @DELETE
