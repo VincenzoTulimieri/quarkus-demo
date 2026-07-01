@@ -37,7 +37,6 @@ public class UserService {
     // metodi di gestione degli utenti
     @Transactional
     public UserEntity createUser(UserEntity user){
-        log.debug("Creazione User");
         userRepository.persist(user);
         log.info("User creato correttamente con id: " + user.getId());
         return user;
@@ -45,16 +44,10 @@ public class UserService {
 
     @Transactional
     public UserEntity updateUser(Long id, UserEntity newData){
-        log.debug("Avvio aggiornamento utente con id: " + id);
         UserEntity entity = userRepository.findById(id);
-
-        if (entity == null){
-            log.warn("Impossibile modificare: User non trovato con id: " + id);
-            return null;
-        }
-
         entity.setName(newData.getName());
         entity.setEmail(newData.getEmail());
+        log.info("Utente aggiornato con id: " + id);
         return entity;
     }
 
