@@ -2,8 +2,8 @@ package org.acme.user.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -13,11 +13,12 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Email is required")
     private String name;
-    @NotNull
-    @NotEmpty
+
+    @Email
+    @NotBlank(message = "Email is required")
+    @Column(unique = true)
     private String email;
 
     public UserEntity(){

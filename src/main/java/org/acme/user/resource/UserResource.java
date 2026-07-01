@@ -1,7 +1,6 @@
 package org.acme.user.resource;
 
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -48,16 +47,9 @@ public class UserResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateUser(@PathParam("id") Long id, UserEntity newData){
-        try {
+    public Response updateUser(@PathParam("id") Long id, @Valid UserEntity newData){
             UserEntity updatedUser = userService.updateUser(id, newData);
             return Response.ok(updatedUser).build();
-        }catch (IllegalArgumentException exception){
-            return Response.status(Response.Status.NOT_FOUND)
-                    .type(MediaType.TEXT_PLAIN)
-                    .entity(exception.getMessage())
-                    .build();
-        }
     }
 
     @DELETE

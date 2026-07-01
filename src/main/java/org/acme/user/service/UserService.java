@@ -41,13 +41,8 @@ public class UserService {
     @Transactional
     public UserEntity updateUser(Long id, UserEntity newData){
         UserEntity entity = userRepository.findById(id);
-        if(entity != null){
-            entity.setName(newData.getName());
-            entity.setEmail(newData.getEmail());
-        }else {
-            throw new IllegalArgumentException("Utente non trovato con id: " + id);
-        }
-
+        entity.setName(newData.getName());
+        entity.setEmail(newData.getEmail());
         return entity;
     }
 
