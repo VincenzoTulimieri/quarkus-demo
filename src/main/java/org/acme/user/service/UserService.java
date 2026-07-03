@@ -8,6 +8,7 @@ import org.acme.user.repository.UserRepository;
 import org.jboss.logging.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
@@ -22,8 +23,8 @@ public class UserService {
         return userRepository.listAll();
     }
 
-    public UserEntity getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserEntity> getUserById(Long id) {
+        return userRepository.findByIdOptional(id);
     }
 
     public UserEntity getUserByEmail(String email) {

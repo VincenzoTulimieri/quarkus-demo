@@ -10,6 +10,7 @@ import org.acme.user.service.UserService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,13 +28,14 @@ public class UserResource {
     @GET
     @Path("/{id}")
     public Response getUserById(@PathParam("id") Long id){
-        UserEntity user = userService.getUserById(id);
-        if (user == null){
+        Optional<UserEntity> optionalUser = userService.getUserById(id);
+        if (optionalUser.isEmpty()){
             return Response.status(Response.Status.NOT_FOUND)
                     .type(MediaType.TEXT_PLAIN)
                     .entity("Utente non trovato")
                     .build();
         }
+        UserEntity user = optionalUser.get();
         return Response.ok(user).build();
     }
 
