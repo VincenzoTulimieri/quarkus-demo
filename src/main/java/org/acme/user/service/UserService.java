@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.user.entity.UserEntity;
+import org.acme.user.kafka.UsersEventsProducer;
 import org.acme.user.repository.UserRepository;
 import org.jboss.logging.Logger;
 
@@ -17,6 +18,9 @@ public class UserService {
 
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    UsersEventsProducer usersEventsProducer;
 
     // metodi di gestione dei dati dell'utente
     public List<UserEntity> getAllUsers(){
@@ -39,6 +43,7 @@ public class UserService {
     @Transactional
     public UserEntity createUser(UserEntity user){
         userRepository.persist(user);
+        usersEventsProducer.sendUserCreatedEvent(user.getId(),  user.getName(), user.getEmail());
         log.info("User creato correttamente con id: " + user.getId());
         return user;
     }
