@@ -10,7 +10,7 @@ public class UsersEventsProducer {
     @Channel("user-events-out")
     Emitter<String> emitter;
 
-    public void sendUserCreatedEvent(long userId,String name, String email) {
+    public void sendUserCreatedEvent(Long userId,String name, String email) {
         String message = """
         {
           "eventType": "USER_CREATED",
@@ -19,6 +19,28 @@ public class UsersEventsProducer {
           "email": "%s"
         }
         """.formatted(userId, name, email);
+        emitter.send(message);
+    }
+
+    public void sendUserUpdatedEvent(Long userId,String name, String email) {
+        String message = """
+        {
+          "eventType": "USER_UPDATED",
+          "userId": %d,
+          "name": "%s",
+          "email": "%s"
+        }
+        """.formatted(userId,name,email);
+        emitter.send(message);
+    }
+
+    public void sendUserDeletedEvent(Long userId) {
+        String message = """
+        {
+          "eventType": "USER_DELETED",
+          "userId": %d
+        }
+        """.formatted(userId);
         emitter.send(message);
     }
 }
