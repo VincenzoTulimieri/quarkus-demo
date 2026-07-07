@@ -51,15 +51,24 @@ public class UserService {
     @Transactional
     public UserEntity updateUser(Long id, UserEntity newData){
         UserEntity entity = userRepository.findById(id);
+        if(entity == null){
+            log.info("User non trovato con id: " + id);
+            return null;
+        }
         entity.setName(newData.getName());
         entity.setEmail(newData.getEmail());
+        usersEventsProducer.sendUserUpdatedEvent(entity.getId(), entity.getName(), entity.getEmail());
         log.info("Utente aggiornato con id: " + id);
         return entity;
     }
 
     @Transactional
     public boolean deleteUser(Long id){
-        return userRepository.deleteById(id);
+        boolean deleted = userRepository.deleteById(id);
+        if(deleted){
+            usersEventsProducer.sendUserDeletedEvent(id);
+        }
+        return deleted;
     }
 
 }
