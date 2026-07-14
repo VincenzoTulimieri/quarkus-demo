@@ -21,21 +21,21 @@ public class TaskService {
     @Inject
     UserRepository userRepository;
 
-    public List<TaskEntity> findAll() {
-        return taskRepository.listAll();
+    public List<TaskEntityDTO> findAll() {
+        return taskRepository.listAll().stream().map(this::toDTO).toList();
     }
 
-    public Optional<TaskEntity> findById(Long id) {
-        return taskRepository.findByIdOptional(id);
+    public Optional<TaskEntityDTO> findById(Long id) {
+        return taskRepository.findByIdOptional(id).map(this::toDTO);
     }
 
     @Transactional
-    public TaskEntity createTask(TaskEntity newTask, Long userId) {
+    public TaskEntityDTO createTask(TaskEntity newTask, Long userId) {
         UserEntity user = userRepository.findByIdOptional(userId).orElseThrow(() -> new IllegalArgumentException("Utente non trovate"));
         newTask.setUser(user);
         newTask.setCreated(LocalDateTime.now());
         taskRepository.persist(newTask);
-        return newTask;
+        return toDTO(newTask);
     }
 
     @Transactional

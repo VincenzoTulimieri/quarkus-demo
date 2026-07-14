@@ -23,29 +23,29 @@ public class TaskResource {
     TaskService taskService;
 
     @GET
-    public List<TaskEntity> getAllTasks() {
+    public List<TaskEntityDTO> getAllTasks() {
        return taskService.findAll();
     }
 
     @GET
     @Path("/{id}")
     public Response getTaskById(@PathParam("id") Long id) {
-        Optional<TaskEntity> task = taskService.findById(id);
+        Optional<TaskEntityDTO> task = taskService.findById(id);
         if (task.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
                     .type(MediaType.TEXT_PLAIN)
                     .entity("Task with id " + id + " not found")
                     .build();
         }
-        TaskEntity taskEntity = task.get();
-        return Response.ok(taskEntity).build();
+        TaskEntityDTO taskDTO = task.get();
+        return Response.ok(taskDTO).build();
     }
 
     @POST
     @Path("/users/{userId}")
     public Response createTask(@PathParam("userId") Long userId, @Valid TaskEntity taskEntity) {
-        TaskEntity newTask = taskService.createTask(taskEntity,userId);
-        return Response.created(URI.create("/tasks/" + newTask.getId()))
+        TaskEntityDTO newTask = taskService.createTask(taskEntity,userId);
+        return Response.created(URI.create("/tasks/" + newTask.id()))
                 .entity(newTask)
                 .build();
     }
